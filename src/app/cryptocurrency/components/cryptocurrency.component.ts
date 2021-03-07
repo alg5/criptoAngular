@@ -3,14 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CryptocurrencyData, SortOptionsEnum, ValueText } from 'src/app/cryptocurrency/models';
 import { CryptocurrencyService } from 'src/app/core/services/cryptocurrency.service';
-
+export const MAX_WIDTH_MOBILE = 760;
 @Component({
   selector: 'app-cryptocurrency',
   templateUrl: './cryptocurrency.component.html',
   styleUrls: ['./cryptocurrency.component.css']
 })
+
 export class CryptocurrencyComponent implements OnInit {
 
+  isMobile:boolean;
+  isMobileOld:boolean;
   lastTime: string;
   lastDate:string;
 
@@ -22,12 +25,15 @@ export class CryptocurrencyComponent implements OnInit {
   page: number = 1;
   pageSize: number = 20;
 
+  breakpoint :number;
   loading:boolean;
  
   criptoDataList: Array< CryptocurrencyData>;
   criptoDataListFiltered: Array< CryptocurrencyData>;
 
   sortOptions: Array<ValueText>;
+
+  SortOptionsEnum = SortOptionsEnum;
   
   translations = {
     WelcomeText : "Welcome to Cryptocurrency  "
@@ -49,6 +55,8 @@ export class CryptocurrencyComponent implements OnInit {
     { }
 
   ngOnInit(): void {
+    this.isMobile = this.isMobileOld = window.innerWidth <= MAX_WIDTH_MOBILE;
+    console.log("ngOnInit:isMobile", this.isMobile);
     const now = Date();
     this.lastDate = this.datePipe.transform(now, 'dd/MM/yyyy');
     this.lastTime = this.datePipe.transform(now, 'shortTime');
@@ -97,8 +105,12 @@ export class CryptocurrencyComponent implements OnInit {
   onSortOptionChange($event)
   {
     this.page = 1;
+    this.sortOption = this.rForm.get('sortOption').value;
+    if (this.criptoDataList)
+      this.filteredData();
   }
   filteredData(){
+    
     this.criptoDataListFiltered = this.criptoDataList;
     //sorting desc
     let sortOption = this.rForm.get('sortOption').value;
@@ -113,14 +125,27 @@ export class CryptocurrencyComponent implements OnInit {
       });      
     }
     //paging
+    if (!this.isMobile){
+      this.criptoDataListFiltered = this.criptoDataListFiltered.slice((this.page-1) * this.pageSize, this. page * this.pageSize);
+    }
 
 
-
-  }
-  onPageChanged($event){
-    // console.log("onPageChanged", $event);
   }
   
+  
+  onPageChanged($event){
+    // console.log("onPageChanged", $event);
+    if (this.criptoDataList)
+    this.filteredData();
+  }
+  onResize(event) {
+    this.isMobile = event.target.innerWidth <= MAX_WIDTH_MOBILE;
+    console.log("onResize:isMobile", this.isMobile);
+    if (this.isMobile != this.isMobileOld){
+      this.isMobileOld = this.isMobile;
+      this.filteredData();
+    }
+  }
 
 
 }

@@ -11,25 +11,25 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { OnlyNumericIntegerDirective } from './cryptocurrency/directives/only-numeric-integer.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
+    // OnlyNumericIntegerDirective
 
   ],
   
   imports: [
     BrowserModule,
     AppRoutingModule,
-    // MaterialModule,
     SharedModule,
     HttpClientModule,
     FormsModule,
     BrowserModule,
     ReactiveFormsModule,
     NgbModule
-    // BrowserAnimationsModule
-     
+    
   ],
   exports: [],
   providers: [DatePipe, 

@@ -10,11 +10,12 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MaterialModule } from './material.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
+import { OnlyNumericIntegerDirective } from '../cryptocurrency/directives/only-numeric-integer.directive';
 
 @NgModule({
   declarations: [ 
- 
+    // OnlyNumericIntegerDirective,
+
                 ],
   imports: [
     CommonModule,
@@ -35,7 +36,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
      NgxPaginationModule,
     NgxFileDropModule,
-    
+    // OnlyNumericIntegerDirective
   ]
 })
 export class SharedModule { }
